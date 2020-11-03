@@ -2,7 +2,7 @@
 
 config=$PT_config
 
-echo Hello from ben
+echo Hello from benjamin
 
 # Puppet Task Name: config_check
 #
