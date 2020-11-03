@@ -2,6 +2,8 @@
   "puppet_task_version": 1,
   "supports_noop": false,
   "description": "Check and compare Junper config differences",
+  "remote": true,
+  "input_method": "stdin",
   "parameters": {
     "config":{
       "description": "Config to test",

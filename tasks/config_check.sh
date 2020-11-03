@@ -4,6 +4,8 @@ config=$PT_config
 
 echo Hello from benjamin
 
+exit 0
+
 # Puppet Task Name: config_check
 #
 # This is where you put the shell code for your task.
