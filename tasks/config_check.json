@@ -3,11 +3,11 @@
   "supports_noop": false,
   "description": "Check and compare Junper config differences",
   "remote": true,
-  "input_method": "stdin",
+  "input_method": "environment",
   "parameters": {
     "config":{
       "description": "Config to test",
-      "type": "String[1]"
+      "type": "String[2]"
     }
   }
 }

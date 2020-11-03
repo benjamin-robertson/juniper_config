@@ -1,8 +1,48 @@
-#!/bin/sh
+#!/bin/bash
 
 config=$PT_config
+timestamp=`date +%s`
 
-echo Hello from benjamin
+echo Using configuration file $config
+echo $timestamp
+
+scp $config bolt@13.211.138.173:/tmp/boltconfig
+#-$timestamp
+
+commands="show interface terse \n exit"
+#commands="configure exclusive" \
+#load set /tmp/juniperconfig \
+#commit check \
+#commit | compare \
+#commit and-quit \
+#exit"
+
+#`echo ${commands} > /tmp/commands-${timestamp}`
+
+#ssh bolt@13.211.138.173 < echo ${commands}
+#ssh bolt@13.211.138.173 < /tmp/commands-$timestamp
+
+#send_command()
+#{
+#    echo "spawn ssh bolt@13.211.138.173"
+#    echo "sleep 10"
+#    echo "send \"configure exclusive\r\""
+#    echo "send \"load set /tmp/boltconfig\r\""
+##    echo "send \"show | compare\r\""
+#    echo "send \"commit and-quit\r\""
+#}
+#`send_command | /usr/bin/expect -f - >> /tmp/expectlog`
+
+/usr/bin/expect -c '
+  spawn ssh bolt@13.211.138.173
+  sleep 10
+  send "configure exclusive\r"
+  send "load set /tmp/boltconfig\r"
+  send "show | compare\r"
+  send "commit and-quit\r"
+'
+
+
 
 exit 0
 
