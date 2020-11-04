@@ -12,5 +12,3 @@ send "show | compare\r"
 send "commit and-quit\r"
 close
 exit
-
-#hi!!
