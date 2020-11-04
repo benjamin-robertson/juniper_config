@@ -10,8 +10,8 @@ timestamp=`date +%s`
 
 echo Using configuration file $config
 
-host=(echo $host | awk -F 'uri."' { print $2 })
-echo new host $host
+newhost=`echo $host | awk -F 'uri."' { print $2 }`
+echo new host $newhost
 
 scp $config bolt@13.211.138.173:/tmp/boltconfig-$timestamp
 
