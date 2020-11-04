@@ -34,12 +34,21 @@ commands="show interface terse \n exit"
 #`send_command | /usr/bin/expect -f - >> /tmp/expectlog`
 
 /usr/bin/expect -c '
-  spawn ssh bolt@13.211.138.173
-  sleep 10
-  send "configure exclusive\r"
-  send "load set /tmp/boltconfig\r"
-  send "show | compare\r"
-  send "commit and-quit\r"
+spawn ssh bolt@13.211.138.173
+sleep 2
+send "\r"
+expect "*>"
+send "configure exclusive\r"
+expect "*#"
+send "load set /tmp/boltconfig\r"
+expect "*#"
+send "show | compare\r"
+expect "*#"
+send "commit and-quit\r"
+expect "*>"
+close
+exit
+
 '
 
 
