@@ -4,6 +4,7 @@ config=$PT_config
 username=$PT_user
 echo noop is $PT_noop
 echo host is $PT_target
+export
 timestamp=`date +%s`
 
 echo Using configuration file $config
