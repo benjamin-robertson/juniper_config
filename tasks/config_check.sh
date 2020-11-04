@@ -2,7 +2,6 @@
 
 
 # set all the varibles
-export
 config=$PT_config
 username=$PT_user
 host=$PT__target
