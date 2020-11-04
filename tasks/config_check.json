@@ -6,12 +6,16 @@
   "input_method": "environment",
   "parameters": {
     "config":{
-      "description": "Config to test1",
+      "description": "Config to apply",
       "type": "String[2]"
     },
     "user":{
       "description": "User to login to juniper",
       "type": "String[1]"
+    },
+    "apply_mode":{
+      "description": "Apply mode, either set, merge, override, replace",
+      "type": "Enum[\"set\",\"merge\",\"override\",\"replace\"]"
     }
   }
 }

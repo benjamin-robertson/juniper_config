@@ -5,6 +5,7 @@
 config=$PT_config
 username=$PT_user
 host=$PT__target
+applymode=$PT_apply_mode
 # diag echos
 echo noop is $PT__noop
 echo host is $PT__target
@@ -13,9 +14,11 @@ echo host is $PT__target
 timestamp=`date +%s`
 
 echo Using configuration file $config
+echo Running in load mode $applymode
 
 newhost=$(echo $host | awk -F 'uri":' '{ print $2 }' | awk -F "," '{ print $1 }' | sed 's/"//g')
 echo Running on host $newhost
+
 
 # Copy config to juniper host under /tmp
 scp $config bolt@$newhost:/tmp/boltconfig-$timestamp
@@ -37,7 +40,7 @@ send_command()
     echo "expect \"*>\""
     echo "send \"configure exclusive\r\""
     echo "expect \"*#\""
-    echo "send \"load set /tmp/boltconfig-$timestamp\r\""
+    echo "send \"load $applymode /tmp/boltconfig-$timestamp\r\""
     echo "expect \"*#\""
     echo "send \"show | compare\r\""
     echo "expect \"*#\""
