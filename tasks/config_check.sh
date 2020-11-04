@@ -2,12 +2,16 @@
 
 config=$PT_config
 username=$PT_user
-echo noop is $PT_noop
+host=$PT_target
+echo noop is $PT__noop
 echo host is $PT__target
 export
 timestamp=`date +%s`
 
 echo Using configuration file $config
+
+host=(echo $host | awk -F 'uri."' { print $2 })
+echo new host $host
 
 scp $config bolt@13.211.138.173:/tmp/boltconfig-$timestamp
 
