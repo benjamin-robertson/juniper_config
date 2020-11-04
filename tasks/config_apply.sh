@@ -39,7 +39,7 @@ if [[ -v PT_password ]]
 then
     send_command_password()
     {
-        echo "spawn ssh $username@$newhost"
+        echo "spawn ssh -oStrictHostKeyChecking=no $username@$newhost"
         echo "sleep 2"
         echo "expect \"Password:\""
         echo "send \"$PT_password\""
@@ -68,7 +68,7 @@ if [[ -v PT_ssh_key ]]
 then
     send_command_explict_key()
     {
-        echo "spawn ssh -i $PT_ssh_key $username@$newhost"
+        echo "spawn ssh -oStrictHostKeyChecking=no -i $PT_ssh_key $username@$newhost"
         echo "sleep 2"
         echo "send \r"
         echo "expect \"*>\""
@@ -93,7 +93,7 @@ fi
 #assume default ssh key
 send_command()
 {
-    echo "spawn ssh $username@$newhost"
+    echo "spawn ssh -oStrictHostKeyChecking=no $username@$newhost"
     echo "sleep 2"
     echo "send \r"
     echo "expect \"*>\""
