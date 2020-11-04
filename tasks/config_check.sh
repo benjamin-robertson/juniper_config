@@ -3,7 +3,7 @@
 config=$PT_config
 username=$PT_user
 echo noop is $PT_noop
-echo host is $PT_target
+echo host is $PT__target
 export
 timestamp=`date +%s`
 
