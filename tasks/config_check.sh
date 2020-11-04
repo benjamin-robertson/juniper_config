@@ -37,7 +37,7 @@ send_command()
     echo "send \"commit and-quit\r\""
     echo "expect \"*>\""
 }
-send_command | /usr/bin/expect -f - >> /tmp/expectlog
+send_command | /usr/bin/expect -f -
 
 
 
