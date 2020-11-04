@@ -1,6 +1,6 @@
 {
   "puppet_task_version": 1,
-  "supports_noop": false,
+  "supports_noop": true,
   "description": "Check and compare Junper config differences",
   "remote": true,
   "input_method": "environment",
@@ -8,6 +8,10 @@
     "config":{
       "description": "Config to test1",
       "type": "String[2]"
+    },
+    "user":{
+      "description": "User to login to juniper",
+      "type": "String[1]"
     }
   }
 }

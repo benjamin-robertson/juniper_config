@@ -1,26 +1,15 @@
 #!/bin/bash
 
 config=$PT_config
-echo $PT_hostname
+username=$PT_user
+echo noop is $PT_noop
+echo host is $PT_target
 timestamp=`date +%s`
 
 echo Using configuration file $config
-echo $timestamp
 
 scp $config bolt@13.211.138.173:/tmp/boltconfig-$timestamp
 
-commands="show interface terse \n exit"
-#commands="configure exclusive" \
-#load set /tmp/juniperconfig \
-#commit check \
-#commit | compare \
-#commit and-quit \
-#exit"
-
-#`echo ${commands} > /tmp/commands-${timestamp}`
-
-#ssh bolt@13.211.138.173 < echo ${commands}
-#ssh bolt@13.211.138.173 < /tmp/commands-$timestamp
 
 send_command()
 {
@@ -38,7 +27,6 @@ send_command()
     echo "expect \"*>\""
 }
 send_command | /usr/bin/expect -f -
-
 
 
 
