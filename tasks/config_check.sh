@@ -2,23 +2,22 @@
 
 config=$PT_config
 username=$PT_user
-host=$PT_target
+host=$PT__target
 echo noop is $PT__noop
 echo host is $PT__target
-export
 timestamp=`date +%s`
 
 echo Using configuration file $config
 
-newhost=`echo $host | awk -F 'uri."' { print $2 }`
-echo new host $newhost
+newhost=$(echo $host | awk -F 'uri":' '{ print $2 }' | awk -F "," '{ print $1 }' | sed 's/"//g')
+echo Running on host $newhost
 
-scp $config bolt@13.211.138.173:/tmp/boltconfig-$timestamp
+scp $config bolt@$newhost:/tmp/boltconfig-$timestamp
 
 
 send_command()
 {
-    echo "spawn ssh bolt@13.211.138.173"
+    echo "spawn ssh $username@$newhost"
     echo "sleep 2"
     echo "send \r"
     echo "expect \"*>\""
