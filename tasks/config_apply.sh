@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 # set all the varibles
 config=$PT_config
 username=$PT_user
@@ -123,7 +122,6 @@ send_command()
     echo "exit 0"
 }
 send_command | /usr/bin/expect -f -
-
 
 
 exit 0
