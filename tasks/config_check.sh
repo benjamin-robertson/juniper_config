@@ -20,7 +20,8 @@ echo Running on host $newhost
 # Copy config to juniper host under /tmp
 scp $config bolt@$newhost:/tmp/boltconfig-$timestamp
 
-if [ $PT__noop == true ] then
+if [ $PT__noop == true ]
+then
     echo Running in noop mode
     apply_command="commit check"
 else
