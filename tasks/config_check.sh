@@ -41,9 +41,9 @@ then
     {
         echo "spawn ssh $username@$newhost"
         echo "sleep 2"
-        echo "send \r"
         echo "expect \"Password:\""
         echo "send \"$PT_password\""
+        echo "send \r"
         echo "expect \"*>\""
         echo "send \"configure exclusive\r\""
         echo "expect \"*#\""
