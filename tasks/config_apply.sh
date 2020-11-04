@@ -7,8 +7,7 @@ username=$PT_user
 host=$PT__target
 applymode=$PT_apply_mode
 # diag echos
-echo noop is $PT__noop
-echo host is $PT__target
+
 
 #set timestamp for config file
 timestamp=`date +%s`
@@ -58,6 +57,10 @@ then
             echo "send \"exit configuration-mode\r\""
         fi
         echo "expect \"*>\""
+        echo "send \"file delete /tmp/boltconfig-$timestamp\r\""
+        echo "expect \"*>\""
+        echo "send \"exit\""
+        echo "exit 0"
     }
     send_command_password | /usr/bin/expect -f -
     exit 0
@@ -85,6 +88,10 @@ then
             echo "send \"exit configuration-mode\r\""
         fi
         echo "expect \"*>\""
+        echo "send \"file delete /tmp/boltconfig-$timestamp\r\""
+        echo "expect \"*>\""
+        echo "send \"exit\""
+        echo "exit 0"
     }
     send_command_explict_key | /usr/bin/expect -f -
     exit 0
@@ -110,6 +117,10 @@ send_command()
         echo "send \"exit configuration-mode\r\""
     fi
     echo "expect \"*>\""
+    echo "send \"file delete /tmp/boltconfig-$timestamp\r\""
+    echo "expect \"*>\""
+    echo "send \"exit\""
+    echo "exit 0"
 }
 send_command | /usr/bin/expect -f -
 
