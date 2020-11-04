@@ -1,10 +1,15 @@
 #!/bin/bash
 
+
+# set all the varibles
 config=$PT_config
 username=$PT_user
 host=$PT__target
+# diag echos
 echo noop is $PT__noop
 echo host is $PT__target
+
+#set timestamp for config file
 timestamp=`date +%s`
 
 echo Using configuration file $config
@@ -12,8 +17,16 @@ echo Using configuration file $config
 newhost=$(echo $host | awk -F 'uri":' '{ print $2 }' | awk -F "," '{ print $1 }' | sed 's/"//g')
 echo Running on host $newhost
 
+# Copy config to juniper host under /tmp
 scp $config bolt@$newhost:/tmp/boltconfig-$timestamp
 
+if [ $PT__noop == true ] then
+    echo Running in noop mode
+    apply_command="commit check"
+else
+    echo Running in apply mode
+    apply_command="commit and-quit"
+fi
 
 send_command()
 {
