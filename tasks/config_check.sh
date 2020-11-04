@@ -22,34 +22,39 @@ commands="show interface terse \n exit"
 #ssh bolt@13.211.138.173 < echo ${commands}
 #ssh bolt@13.211.138.173 < /tmp/commands-$timestamp
 
-#send_command()
-#{
-#    echo "spawn ssh bolt@13.211.138.173"
-#    echo "sleep 10"
-#    echo "send \"configure exclusive\r\""
-#    echo "send \"load set /tmp/boltconfig\r\""
-##    echo "send \"show | compare\r\""
-#    echo "send \"commit and-quit\r\""
-#}
-#`send_command | /usr/bin/expect -f - >> /tmp/expectlog`
+send_command()
+{
+    echo "spawn ssh bolt@13.211.138.173"
+    echo "sleep 2"
+    echo "send \r"
+    echo "expect \"*>\""
+    echo "send \"configure exclusive\r\""
+    echo "expect \"*#\""
+    echo "send \"load set /tmp/boltconfig\r\""
+    echo "expect \"*#\""
+    echo "send \"show | compare\r\""
+    echo "expect \"*#\""
+    echo "send \"commit and-quit\r\""
+    echo "expect \"*>\""
+}
+send_command | /usr/bin/expect -f - >> /tmp/expectlog
 
-/usr/bin/expect -c '
-spawn ssh bolt@13.211.138.173
-sleep 2
-send "\r"
-expect "*>"
-send "configure exclusive\r"
-expect "*#"
-send "load set /tmp/boltconfig\r"
-expect "*#"
-send "show | compare\r"
-expect "*#"
-send "commit and-quit\r"
-expect "*>"
-close
-exit
-
-'
+#/usr/bin/expect -c '
+#spawn ssh bolt@13.211.138.173
+#sleep 2
+#send "\r"
+#expect "*>"
+#send "configure exclusive\r"
+#expect "*#"
+#send "load set /tmp/boltconfig\r"
+#expect "*#"
+#send "show | compare\r"
+#expect "*#"
+#send "commit and-quit\r"
+#expect "*>"
+#close
+#exit
+#'
 
 
 
