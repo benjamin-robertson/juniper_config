@@ -1,13 +1,13 @@
 #!/bin/bash
 
 config=$PT_config
+echo $PT_hostname
 timestamp=`date +%s`
 
 echo Using configuration file $config
 echo $timestamp
 
-scp $config bolt@13.211.138.173:/tmp/boltconfig
-#-$timestamp
+scp $config bolt@13.211.138.173:/tmp/boltconfig-$timestamp
 
 commands="show interface terse \n exit"
 #commands="configure exclusive" \
@@ -30,7 +30,7 @@ send_command()
     echo "expect \"*>\""
     echo "send \"configure exclusive\r\""
     echo "expect \"*#\""
-    echo "send \"load set /tmp/boltconfig\r\""
+    echo "send \"load set /tmp/boltconfig-$timestamp\r\""
     echo "expect \"*#\""
     echo "send \"show | compare\r\""
     echo "expect \"*#\""
@@ -38,6 +38,12 @@ send_command()
     echo "expect \"*>\""
 }
 send_command | /usr/bin/expect -f - >> /tmp/expectlog
+
+
+
+
+
+
 
 #/usr/bin/expect -c '
 #spawn ssh bolt@13.211.138.173
