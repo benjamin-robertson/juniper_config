@@ -41,7 +41,12 @@ send_command()
     echo "expect \"*#\""
     echo "send \"show | compare\r\""
     echo "expect \"*#\""
-    echo "send \"commit and-quit\r\""
+    echo "send \"$apply_command\r\""
+    if [ $PT__noop == true ]
+    then
+        echo "expect \"*#\""
+        echo "send \"exit configuration-mode\r\""
+    fi
     echo "expect \"*>\""
 }
 send_command | /usr/bin/expect -f -
