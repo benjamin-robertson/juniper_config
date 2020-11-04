@@ -65,6 +65,7 @@ fi
 
 #if we are using explicit private key
 if [[ -v PT_ssh_key ]]
+then
     send_command_explict_key()
     {
         echo "spawn ssh -i $PT_ssh_key $username@$newhost"
