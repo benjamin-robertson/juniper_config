@@ -72,7 +72,10 @@ then
     {
         echo "set timeout 5"
         echo "spawn ssh -o \"StrictHostKeyChecking no\" -o \"ConnectTimeout 10\" -i $PT_ssh_key $username@$newhost"
-        echo "expect { \"*>\" { sleep 2 } timeout { puts \"Failed to connect to host $newhost\" ; exit 1 } }"
+        echo "expect { 
+            \"*>\" { sleep 2 } 
+            timeout { puts \"Failed to connect to host $newhost\" ; exit 1 } 
+            }"
         echo "send \r"
         echo "expect \"*>\""
         echo "send \"configure exclusive\r\""
