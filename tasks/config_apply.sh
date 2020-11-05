@@ -97,7 +97,7 @@ then
         echo "exit 0"
     }
     send_command_explict_key | /usr/bin/expect -f -
-    if [ $? != 0 ]
+    if [ $? -ne 0 ]
     then
         exit 1
     else
