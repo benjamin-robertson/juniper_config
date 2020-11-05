@@ -47,36 +47,19 @@ tasks that involve different types, classes, and functions working in tandem.
 
 ## Reference
 
-This section is deprecated. Instead, add reference information to your code as
-Puppet Strings comments, and then use Strings to generate a REFERENCE.md in your
-module. For details on how to add code comments and generate documentation with
-Strings, see the [Puppet Strings documentation][2] and [style guide][3].
+Parameters accepted
 
-If you aren't ready to use Strings yet, manually create a REFERENCE.md in the
-root of your module directory and list out each of your module's classes,
-defined types, facts, functions, Puppet tasks, task plans, and resource types
-and providers, along with the parameters for each.
+config     : String Minlength 1
+user       : String Minlength 1
+apply_mode : String["set,"merge","override","replace"]
+password   : Optional String
+ssh_key    : Optional String
 
-For each element (class, defined type, function, and so on), list:
+For apply_mode see https://www.juniper.net/documentation/en_US/junos/topics/topic-map/junos-config-files-loading.html
 
-* The data type, if applicable.
-* A description of what the element does.
-* Valid values, if the data type doesn't make it obvious.
-* Default value, if any.
+If no password or ssh_key is set, standard user ssh key will be used.
 
-For example:
-
-```
-### `pet::cat`
-
-#### Parameters
-
-##### `meow`
-
-Enables vocalization in your cat. Valid options: 'string'.
-
-Default: 'medium-loud'.
-```
+Supports noop, will report on changes to be made if --noop is used. 
 
 ## Limitations
 
