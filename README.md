@@ -27,7 +27,9 @@ A bolt task which allows you to update Juniper devices with configurations snipp
 2. Clone git repo locally, 'git clone https://github.com/benjamin-robertson/juniper_config.git'
 3. Change directory into juniper_config. 
 4. Run 'bolt project init' within that directory
-5. You should see 
+5. Run 'bolt project show' within that directory, you should see "juniper_config::config_apply   Check and compare Junper config differences" listed
+
+Note: unless the task is installed in your bolt module path, you will need to run bolt task from the juniper_config project directory
 
 ### Beginning with juniper_config
 
@@ -78,20 +80,5 @@ Default: 'medium-loud'.
 
 ## Limitations
 
-In the Limitations section, list any incompatibilities, known issues, or other
-warnings.
+Only tested on Enterprise Linux 7
 
-## Development
-
-In the Development section, tell other users the ground rules for contributing
-to your project and how they should submit their work.
-
-## Release Notes/Contributors/Etc. **Optional**
-
-If you aren't using changelog, put your release notes here (though you should
-consider using changelog). You can also add any additional sections you feel are
-necessary or important to include here. Please use the `##` header.
-
-[1]: https://puppet.com/docs/pdk/latest/pdk_generating_modules.html
-[2]: https://puppet.com/docs/puppet/latest/puppet_strings.html
-[3]: https://puppet.com/docs/puppet/latest/puppet_strings_style.html
