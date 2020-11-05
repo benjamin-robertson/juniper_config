@@ -1,10 +1,6 @@
 # juniper_config
 
-Welcome to your new module. A short overview of the generated parts can be found
-in the [PDK documentation][1].
-
-The README template below provides a starting point with details about what
-information to include in your README.
+A bolt task which allows you to update Juniper devices with configurations snippets.
 
 ## Table of Contents
 
@@ -19,99 +15,61 @@ information to include in your README.
 
 ## Description
 
-Briefly tell users why they might want to use your module. Explain what your
-module does and what kind of problems users can solve with it.
-
-This should be a fairly short description helps the user decide if your module
-is what they want.
+A bolt task which allows you to update Juniper devices with configurations snippets.
 
 ## Setup
 
-### What juniper_config affects **OPTIONAL**
+### Setup Requirements
 
-If it's obvious what your module touches, you can skip this section. For
-example, folks can probably figure out that your mysql_instance module affects
-their MySQL instances.
+### This has only been tested on enterprise linux 7!!!!!!!!!!!!!!!!
 
-If there's more that they should know about, though, this is the place to
-mention:
+1. Requires bolt to be intalled see: https://puppet.com/docs/bolt/latest/bolt_installing.html#install-bolt-on-rhel-sles-or-fedora
+2. Clone git repo locally, 'git clone https://github.com/benjamin-robertson/juniper_config.git'
+3. Change directory into juniper_config. 
+4. Run 'bolt project init' within that directory
+5. Run 'bolt project show' within that directory, you should see "juniper_config::config_apply   Check and compare Junper config differences" listed
 
-* Files, packages, services, or operations that the module will alter, impact,
-  or execute.
-* Dependencies that your module automatically installs.
-* Warnings or other important notices.
-
-### Setup Requirements **OPTIONAL**
-
-If your module requires anything extra before setting up (pluginsync enabled,
-another module, etc.), mention it here.
-
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you might want to include an additional "Upgrading" section here.
+Note: unless the task is installed in your bolt module path, you will need to run bolt task from the juniper_config project directory
 
 ### Beginning with juniper_config
 
-The very basic steps needed for a user to get the module up and running. This
-can include setup steps, if necessary, or it can be an example of the most basic
-use of the module.
+Note: --transport=remote must always be set when using this task.
+
+A basic config apply test
+
+bolt task run juniper_config::config_apply --targets hostname --transport=remote config=/path/to/config user=bolt apply_mode=merge --noop
 
 ## Usage
 
-Include usage examples for common use cases in the **Usage** section. Show your
-users how to use your module to solve problems, and be sure to include code
-examples. Include three to five examples of the most important or common tasks a
-user can accomplish with your module. Show users how to accomplish more complex
-tasks that involve different types, classes, and functions working in tandem.
+-- User with password to merge a configuration file --
+
+bolt task run juniper_config::config_apply --targets hostname --transport=remote config=/path/to/config user=bolt password=hello apply_mode=merge
+
+-- Applying to multiple devices in set mode --
+
+bolt task run juniper_config::config_apply --targets hostname,hostname2,hostname3 --transport=remote config=/path/to/config user=bolt password=hello apply_mode=set
+
+-- Applying to device with specified ssh key --
+
+bolt task run juniper_config::config_apply --targets hostname,hostname2,hostname3 --transport=remote config=/path/to/config user=bolt ssh_key=/path/to/ssh/key apply_mode=set
 
 ## Reference
 
-This section is deprecated. Instead, add reference information to your code as
-Puppet Strings comments, and then use Strings to generate a REFERENCE.md in your
-module. For details on how to add code comments and generate documentation with
-Strings, see the [Puppet Strings documentation][2] and [style guide][3].
+Parameters accepted
 
-If you aren't ready to use Strings yet, manually create a REFERENCE.md in the
-root of your module directory and list out each of your module's classes,
-defined types, facts, functions, Puppet tasks, task plans, and resource types
-and providers, along with the parameters for each.
+- config     : String Minlength 1
+- user       : String Minlength 1
+- apply_mode : String["set,"merge","override","replace"]
+- password   : Optional String
+- ssh_key    : Optional String
 
-For each element (class, defined type, function, and so on), list:
+For apply_mode see https://www.juniper.net/documentation/en_US/junos/topics/topic-map/junos-config-files-loading.html
 
-* The data type, if applicable.
-* A description of what the element does.
-* Valid values, if the data type doesn't make it obvious.
-* Default value, if any.
+If no password or ssh_key is set, standard user ssh key will be used.
 
-For example:
-
-```
-### `pet::cat`
-
-#### Parameters
-
-##### `meow`
-
-Enables vocalization in your cat. Valid options: 'string'.
-
-Default: 'medium-loud'.
-```
+Supports noop, will report on changes to be made if --noop is used. 
 
 ## Limitations
 
-In the Limitations section, list any incompatibilities, known issues, or other
-warnings.
+Only tested on Enterprise Linux 7
 
-## Development
-
-In the Development section, tell other users the ground rules for contributing
-to your project and how they should submit their work.
-
-## Release Notes/Contributors/Etc. **Optional**
-
-If you aren't using changelog, put your release notes here (though you should
-consider using changelog). You can also add any additional sections you feel are
-necessary or important to include here. Please use the `##` header.
-
-[1]: https://puppet.com/docs/pdk/latest/pdk_generating_modules.html
-[2]: https://puppet.com/docs/puppet/latest/puppet_strings.html
-[3]: https://puppet.com/docs/puppet/latest/puppet_strings_style.html
