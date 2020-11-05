@@ -2,7 +2,6 @@
 
 A bolt task which allows you to update Juniper devices with configurations snippets.
 
-
 ## Table of Contents
 
 1. [Description](#description)
@@ -20,13 +19,15 @@ A bolt task which allows you to update Juniper devices with configurations snipp
 
 ## Setup
 
-### Setup Requirements **OPTIONAL**
+### Setup Requirements
 
-If your module requires anything extra before setting up (pluginsync enabled,
-another module, etc.), mention it here.
+### This has only been tested on enterprise linux 7!!!!!!!!!!!!!!!!
 
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you might want to include an additional "Upgrading" section here.
+1. Requires bolt to be intalled see: https://puppet.com/docs/bolt/latest/bolt_installing.html#install-bolt-on-rhel-sles-or-fedora
+2. Clone git repo locally, 'git clone https://github.com/benjamin-robertson/juniper_config.git'
+3. Change directory into juniper_config. 
+4. Run 'bolt project init' within that directory
+5. You should see 
 
 ### Beginning with juniper_config
 
