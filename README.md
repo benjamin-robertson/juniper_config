@@ -1,10 +1,7 @@
 # juniper_config
 
-Welcome to your new module. A short overview of the generated parts can be found
-in the [PDK documentation][1].
+A bolt task which allows you to update Juniper devices with configurations snippets.
 
-The README template below provides a starting point with details about what
-information to include in your README.
 
 ## Table of Contents
 
@@ -19,27 +16,9 @@ information to include in your README.
 
 ## Description
 
-Briefly tell users why they might want to use your module. Explain what your
-module does and what kind of problems users can solve with it.
-
-This should be a fairly short description helps the user decide if your module
-is what they want.
+A bolt task which allows you to update Juniper devices with configurations snippets.
 
 ## Setup
-
-### What juniper_config affects **OPTIONAL**
-
-If it's obvious what your module touches, you can skip this section. For
-example, folks can probably figure out that your mysql_instance module affects
-their MySQL instances.
-
-If there's more that they should know about, though, this is the place to
-mention:
-
-* Files, packages, services, or operations that the module will alter, impact,
-  or execute.
-* Dependencies that your module automatically installs.
-* Warnings or other important notices.
 
 ### Setup Requirements **OPTIONAL**
 
