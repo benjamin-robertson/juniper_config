@@ -18,8 +18,7 @@ newhost=$(echo $host | awk -F 'uri":' '{ print $2 }' | awk -F "," '{ print $1 }'
 echo Running on host $newhost
 
 
-# Copy config to juniper host under /tmp
-scp -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" $config bolt@$newhost:/tmp/boltconfig-$timestamp
+
 
 #check if we are operting noop mode
 if [ $PT__noop == true ]
@@ -38,10 +37,16 @@ then
     send_command_password()
     {
         echo "set timeout 5"
+        echo "spawn scp -o \"StrictHostKeyChecking no\" -o \"ConnectTimeout 10\" $config $username@$newhost:/tmp/boltconfig-$timestamp"
+        echo -e "expect { \n
+            \"Password:\" { send \"$PT_password\" } \n
+            timeout { puts \"Failed to connect to host $newhost\" ; exit 1 } \n
+            }"
+        
         echo "spawn ssh -o \"StrictHostKeyChecking no\" -o \"ConnectTimeout 10\" $username@$newhost"
-        echo "expect { 
-            \"Password:\" { send \"$PT_password\" } 
-            timeout { puts \"Failed to connect to host $newhost\" ; exit 1 } 
+        echo -e "expect {\n
+            \"Password:\" { send \"$PT_password\" } \n
+            timeout { puts \"Failed to connect to host $newhost\" ; exit 1 } \n
             }"
         echo "send \r"
         echo "expect \"*>\""
@@ -77,11 +82,13 @@ if [[ -v PT_ssh_key ]]
 then
     send_command_explict_key()
     {
+        # Copy config to juniper host under /tmp
+        scp -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" -i $PT_ssh_key $config $username@$newhost:/tmp/boltconfig-$timestamp
         echo "set timeout 5"
         echo "spawn ssh -o \"StrictHostKeyChecking no\" -o \"ConnectTimeout 10\" -i $PT_ssh_key $username@$newhost"
-        echo "expect { 
-            \"*>\" { sleep 2 } 
-            timeout { puts \"Failed to connect to host $newhost\" ; exit 1 } 
+        echo -e "expect { \n
+            \"*>\" { sleep 2 } \n
+            timeout { puts \"Failed to connect to host $newhost\" ; exit 1 } \n
             }"
         echo "send \r"
         echo "expect \"*>\""
@@ -112,13 +119,16 @@ then
     fi
 fi
 
+# Copy config to juniper host under /tmp
+scp -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" $config $username@$newhost:/tmp/boltconfig-$timestamp
+
 #assume default ssh key
 send_command()
 {
     echo "spawn ssh -o \"StrictHostKeyChecking no\" $username@$newhost"
-    echo "expect { 
-            \"*>\" { sleep 2 } 
-            timeout { puts \"Failed to connect to host $newhost\" ; exit 1 } 
+    echo -e "expect { \n
+            \"*>\" { sleep 2 } \n
+            timeout { puts \"Failed to connect to host $newhost\" ; exit 1 } \n
             }"
     echo "send \r"
     echo "expect \"*>\""
