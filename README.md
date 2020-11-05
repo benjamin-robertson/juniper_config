@@ -57,8 +57,8 @@ bolt task run juniper_config::config_apply --targets hostname,hostname2,hostname
 
 Parameters accepted
 
-1. config     : String Minlength 1
-2. user       : String Minlength 1
+- config     : String Minlength 1
+- user       : String Minlength 1
 - apply_mode : String["set,"merge","override","replace"]
 - password   : Optional String
 - ssh_key    : Optional String
