@@ -7,7 +7,7 @@
   "parameters": {
     "config":{
       "description": "Config to apply",
-      "type": "String[2]"
+      "type": "String[1]"
     },
     "user":{
       "description": "User to login to juniper",
