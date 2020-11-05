@@ -42,7 +42,8 @@ then
             \"Password:\" { send \"$PT_password\" } \n
             timeout { puts \"Failed to connect to host $newhost\" ; exit 1 } \n
             }"
-        
+        echo "sleep 2"
+        echo "expect eof"
         echo "spawn ssh -o \"StrictHostKeyChecking no\" -o \"ConnectTimeout 10\" $username@$newhost"
         echo -e "expect {\n
             \"Password:\" { send \"$PT_password\" } \n
