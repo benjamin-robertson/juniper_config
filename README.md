@@ -33,17 +33,25 @@ Note: unless the task is installed in your bolt module path, you will need to ru
 
 ### Beginning with juniper_config
 
-The very basic steps needed for a user to get the module up and running. This
-can include setup steps, if necessary, or it can be an example of the most basic
-use of the module.
+Note: --transport=remote must always be set when using this task.
+
+A basic config apply test
+
+bolt task run juniper_config::config_apply --targets hostname --transport=remote config=/path/to/config user=bolt apply_mode=merge --noop
 
 ## Usage
 
-Include usage examples for common use cases in the **Usage** section. Show your
-users how to use your module to solve problems, and be sure to include code
-examples. Include three to five examples of the most important or common tasks a
-user can accomplish with your module. Show users how to accomplish more complex
-tasks that involve different types, classes, and functions working in tandem.
+-- User with password to merge a configuration file --
+
+bolt task run juniper_config::config_apply --targets hostname --transport=remote config=/path/to/config user=bolt password=hello apply_mode=merge
+
+-- Applying to multiple devices in set mode --
+
+bolt task run juniper_config::config_apply --targets hostname,hostname2,hostname3 --transport=remote config=/path/to/config user=bolt password=hello apply_mode=set
+
+-- Applying to device with specified ssh key --
+
+bolt task run juniper_config::config_apply --targets hostname,hostname2,hostname3 --transport=remote config=/path/to/config user=bolt ssh_key=/path/to/ssh/key apply_mode=set
 
 ## Reference
 
