@@ -19,7 +19,7 @@ echo Running on host $newhost
 
 
 # Copy config to juniper host under /tmp
-scp $config bolt@$newhost:/tmp/boltconfig-$timestamp
+scp -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" $config bolt@$newhost:/tmp/boltconfig-$timestamp
 
 #check if we are operting noop mode
 if [ $PT__noop == true ]
@@ -37,10 +37,12 @@ if [[ -v PT_password ]]
 then
     send_command_password()
     {
-        echo "spawn ssh -o \"StrictHostKeyChecking no\" $username@$newhost"
-        echo "sleep 2"
-        echo "expect \"Password:\""
-        echo "send \"$PT_password\""
+        echo "set timeout 5"
+        echo "spawn ssh -o \"StrictHostKeyChecking no\" -o \"ConnectTimeout 10\" $username@$newhost"
+        echo "expect { 
+            \"Password:\" { send \"$PT_password\" } 
+            timeout { puts \"Failed to connect to host $newhost\" ; exit 1 } 
+            }"
         echo "send \r"
         echo "expect \"*>\""
         echo "send \"configure exclusive\r\""
@@ -62,7 +64,12 @@ then
         echo "exit 0"
     }
     send_command_password | /usr/bin/expect -f -
-    exit 0
+    if [ $? -ne 0 ]
+    then
+        exit 1
+    else
+        exit 0
+    fi
 fi
 
 #if we are using explicit private key
@@ -101,7 +108,7 @@ then
     then
         exit 1
     else
-    exit 0
+        exit 0
     fi
 fi
 
@@ -109,7 +116,10 @@ fi
 send_command()
 {
     echo "spawn ssh -o \"StrictHostKeyChecking no\" $username@$newhost"
-    echo "sleep 2"
+    echo "expect { 
+            \"*>\" { sleep 2 } 
+            timeout { puts \"Failed to connect to host $newhost\" ; exit 1 } 
+            }"
     echo "send \r"
     echo "expect \"*>\""
     echo "send \"configure exclusive\r\""
@@ -131,6 +141,12 @@ send_command()
     echo "exit 0"
 }
 send_command | /usr/bin/expect -f -
+if [ $? -ne 0 ]
+then
+    exit 1
+else
+    exit 0
+fi
 
 
 exit 0
