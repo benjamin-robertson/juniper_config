@@ -40,9 +40,11 @@ then
         echo "set timeout 5"
         echo "spawn scp -o \"StrictHostKeyChecking no\" -o \"ConnectTimeout 10\" $config $username@$newhost:/tmp/boltconfig-$timestamp"
         echo -e "expect { \n
-            \"Password:\" { send \"$PT_password\" } \n
+            \"Password:\" { send \"$PT_password\r\" ; exp_continue } \n
             timeout { puts \"Failed to connect to host $newhost\" ; exit 1 } \n
+            eof exit\n
             }"
+        echo "send \r"
         echo "sleep 2"
     }
     copy_config_file | /usr/bin/expect -f -
