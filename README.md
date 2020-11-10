@@ -27,7 +27,7 @@ A bolt task which allows you to update Juniper devices with configurations snipp
 2. Clone git repo locally, 'git clone https://github.com/benjamin-robertson/juniper_config.git'
 3. Change directory into juniper_config. 
 4. Run 'bolt project init' within that directory
-5. Run 'bolt project show' within that directory, you should see "juniper_config::config_apply   Check and compare Junper config differences" listed
+5. Run 'bolt task show' within that directory, you should see "juniper_config::config_apply   Check and compare Junper config differences" listed
 
 Note: unless the task is installed in your bolt module path, you will need to run bolt task from the juniper_config project directory
 
