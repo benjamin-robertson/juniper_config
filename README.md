@@ -42,9 +42,9 @@ bolt task run juniper_config::config_apply --targets hostname --transport=remote
 ## Usage
 
 -- User with password to merge a configuration file --
-
+```
 bolt task run juniper_config::config_apply --targets hostname --transport=remote config=/path/to/config user=bolt password=hello apply_mode=merge
-
+```
 -- Applying to multiple devices in set mode --
 
 bolt task run juniper_config::config_apply --targets hostname,hostname2,hostname3 --transport=remote config=/path/to/config user=bolt password=hello apply_mode=set
