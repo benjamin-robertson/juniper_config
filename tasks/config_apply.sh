@@ -7,6 +7,15 @@ host=$PT__target
 applymode=$PT_apply_mode
 # diag echos
 
+# Check install requirements
+expectlocation=`which expect`
+if [ $? == 0 ]
+then
+    echo expect is at $expectlocation
+else
+    echo Cannot locate expect, please install bailing out.
+    exit 1
+fi
 
 #set timestamp for config file
 timestamp=`date +%s`
