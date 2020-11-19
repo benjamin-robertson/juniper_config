@@ -120,6 +120,10 @@ then
         echo "send \"show | compare\r\""
         echo "expect \"*#\""
         echo "send \"$apply_command\r\""
+        echo -e "expect { \n
+            \"*>\" { sleep 1 } \n
+            \"*#\" { puts \"Configuration apply failed on $newhost\" ; exit 1 } \n
+            }"
         if [ $PT__noop == true ]
         then
             echo "expect \"*#\""
