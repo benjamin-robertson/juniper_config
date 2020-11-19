@@ -122,7 +122,7 @@ then
         echo "send \"$apply_command\r\""
         echo -e "expect { \n
             \"*>\" { sleep 1 } \n 
-            \"*#\" { send \"exit configuration-mode\r\" ; sleep 2 ; send \"file delete /tmp/boltconfig-$timestamp\r\" ; puts \"Configuration apply failed on $newhost\" ; exit 1 } \n
+            \"*#\" { set failed true ; send \"exit configuration-mode\r\" } \n
             }"
         if [ $PT__noop == true ]
         then
@@ -132,6 +132,10 @@ then
         echo "expect \"*>\""
         echo "send \"file delete /tmp/boltconfig-$timestamp\r\""
         echo "expect \"*>\""
+        echo -e "if {failed} { \n
+            puts \"Configuration apply failed on $newhost\" \n
+            exit 1 \n
+            }"
         echo "send \"exit\""
         echo "exit 0"
     }
