@@ -120,14 +120,15 @@ then
         echo "send \"show | compare\r\""
         echo "expect \"*#\""
         echo "send \"$apply_command\r\""
-        echo -e "expect { \n
-            \"*>\" { sleep 1 } \n 
-            \"*#\" { set failed true ; send \"exit configuration-mode\r\" } \n
-            }"
         if [ $PT__noop == true ]
         then
             echo "expect \"*#\""
             echo "send \"exit configuration-mode\r\""
+        else
+            echo -e "expect { \n
+                \"*>\" { sleep 1 } \n 
+                \"*#\" { set failed true ; send \"exit configuration-mode\r\" } \n
+                }"
         fi
         echo "expect \"*>\""
         echo "send \"file delete /tmp/boltconfig-$timestamp\r\""
