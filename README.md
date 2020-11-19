@@ -1,7 +1,5 @@
 # juniper_config
 
-### Only been tested on enterprise linux 7
-
 A bolt task which allows you to update Juniper devices with configurations snippets.
 
 ## Table of Contents
@@ -22,6 +20,13 @@ A bolt task which allows you to update Juniper devices with configurations snipp
 ## Setup
 
 ### Setup Requirements
+
+Tested on the following platforms
+Enterprise linux: 7, 8
+Ubuntu: 18.04, 20.04
+SLES: 12, 15
+
+Requires bash, expect and bolt
 
 1. Requires bolt to be intalled see: https://puppet.com/docs/bolt/latest/bolt_installing.html#install-bolt-on-rhel-sles-or-fedora
 2. Clone git repo locally, 'git clone https://github.com/benjamin-robertson/juniper_config.git'
@@ -71,5 +76,8 @@ Supports noop, will report on changes to be made if --noop is used.
 
 ## Limitations
 
-Only tested on Enterprise Linux 7
+Tested on the following platforms
+Enterprise linux: 7, 8
+Ubuntu: 18.04, 20.04
+SLES: 12, 15
 
