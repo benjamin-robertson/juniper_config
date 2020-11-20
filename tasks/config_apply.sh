@@ -115,6 +115,7 @@ then
         # Copy config to juniper host under /tmp
         scp -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" -i $PT_ssh_key $config $username@$newhost:/tmp/boltconfig-$timestamp
         echo "set timeout 5"
+        echo "set failed false"
         echo "spawn ssh -o \"StrictHostKeyChecking no\" -o \"ConnectTimeout 10\" -i $PT_ssh_key $username@$newhost"
         echo -e "expect { \n
             \"*>\" { sleep 2 } \n
