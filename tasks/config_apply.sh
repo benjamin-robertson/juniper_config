@@ -5,7 +5,14 @@ config=$PT_config
 username=$PT_user
 host=$PT__target
 applymode=$PT_apply_mode
-# diag echos
+# check if sleeptime has been set, if not default to 5 seconds
+if [[ -v $PT_sleeptime]] 
+then
+    sleeptime=$PT_sleeptime
+else
+    sleeptime=5
+fi
+
 
 # Check install requirements
 expectlocation=`which expect`
@@ -25,7 +32,7 @@ echo Running in load mode $applymode
 
 newhost=$(echo $host | awk -F 'uri":' '{ print $2 }' | awk -F "," '{ print $1 }' | sed 's/"//g')
 echo Running on host $newhost
-
+echo Sleeptime is at $sleeptime
 
 
 
@@ -82,10 +89,10 @@ then
         echo "send \"load $applymode /tmp/boltconfig-$timestamp\r\""
         echo "expect \"*#\""
         echo "send \"show | compare\r\""
-        echo "sleep 5"
+        echo "sleep $sleeptime"
         echo "expect \"*#\""
         echo "send \"$apply_command\r\""
-        echo "sleep 5"
+        echo "sleep $sleeptime"
         if [ $PT__noop == true ]
         then
             echo "expect \"*#\""
@@ -140,10 +147,10 @@ then
         echo "send \"load $applymode /tmp/boltconfig-$timestamp\r\""
         echo "expect \"*#\""
         echo "send \"show | compare\r\""
-        echo "sleep 5"
+        echo "sleep $sleeptime"
         echo "expect \"*#\""
         echo "send \"$apply_command\r\""
-        echo "sleep 5"
+        echo "sleep $sleeptime"
         if [ $PT__noop == true ]
         then
             echo "expect \"*#\""
@@ -198,10 +205,10 @@ send_command()
     echo "send \"load $applymode /tmp/boltconfig-$timestamp\r\""
     echo "expect \"*#\""
     echo "send \"show | compare\r\""
-    echo "sleep 5"
+    echo "sleep $sleeptime"
     echo "expect \"*#\""
     echo "send \"$apply_command\r\""
-    echo "sleep 5"
+    echo "sleep $sleeptime"
     if [ $PT__noop == true ]
     then
         echo "expect \"*#\""
