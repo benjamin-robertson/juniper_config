@@ -65,6 +65,7 @@ Parameters accepted
 - apply_mode : String["set,"merge","override","replace"]
 - password   : Optional String
 - ssh_key    : Optional String
+- sleeptime  : Optional Integer - sleep time between operations on the JunOS device, default 5 seconds. Some devices with large configurations sets may require longer to apply.
 
 For apply_mode see https://www.juniper.net/documentation/en_US/junos/topics/topic-map/junos-config-files-loading.html
 
