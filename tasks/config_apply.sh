@@ -73,10 +73,16 @@ then
         echo "send \r"
         echo "expect \"*>\""
         echo "send \"configure exclusive\r\""
+        echo "sleep 2"
+        echo -e "expect { \n
+            \"*#\" { sleep 1 } \n
+            \"*>\" { puts \"Could not get exclusive lock on configuration database on $newhost\" ; exit 1 } \n
+            }"
         echo "expect \"*#\""
         echo "send \"load $applymode /tmp/boltconfig-$timestamp\r\""
         echo "expect \"*#\""
         echo "send \"show | compare\r\""
+        echo "sleep 5"
         echo "expect \"*#\""
         echo "send \"$apply_command\r\""
         echo "sleep 5"
@@ -126,10 +132,15 @@ then
         echo "send \r"
         echo "expect \"*>\""
         echo "send \"configure exclusive\r\""
-        echo "expect \"*#\""
+        echo "sleep 2"
+        echo -e "expect { \n
+            \"*#\" { sleep 1 } \n
+            \"*>\" { puts \"Could not get exclusive lock on configuration database on $newhost\" ; exit 1 } \n
+            }"
         echo "send \"load $applymode /tmp/boltconfig-$timestamp\r\""
         echo "expect \"*#\""
         echo "send \"show | compare\r\""
+        echo "sleep 5"
         echo "expect \"*#\""
         echo "send \"$apply_command\r\""
         echo "sleep 5"
@@ -178,10 +189,16 @@ send_command()
     echo "send \r"
     echo "expect \"*>\""
     echo "send \"configure exclusive\r\""
+    echo "sleep 2"
+    echo -e "expect { \n
+        \"*#\" { sleep 1 } \n
+        \"*>\" { puts \"Could not get exclusive lock on configuration database on $newhost\" ; exit 1 } \n
+        }"
     echo "expect \"*#\""
     echo "send \"load $applymode /tmp/boltconfig-$timestamp\r\""
     echo "expect \"*#\""
     echo "send \"show | compare\r\""
+    echo "sleep 5"
     echo "expect \"*#\""
     echo "send \"$apply_command\r\""
     echo "sleep 5"
