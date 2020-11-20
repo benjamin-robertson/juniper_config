@@ -64,6 +64,7 @@ then
     send_command_password()
     {
         echo "set timeout 5"
+        echo "set failed false"
         echo "spawn ssh -o \"StrictHostKeyChecking no\" -o \"ConnectTimeout 10\" $username@$newhost"
         echo -e "expect {\n
             \"Password:\" { send \"$PT_password\" } \n
@@ -91,7 +92,7 @@ then
         echo "expect \"*>\""
         echo "send \"file delete /tmp/boltconfig-$timestamp\r\""
         echo "expect \"*>\""
-        echo -e "if {failed} { \n
+        echo -e "if {\$failed} { \n
             puts \"Configuration apply failed on $newhost\" \n
             exit 1 \n
             }"        
@@ -165,6 +166,8 @@ scp -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" $config $username@$newh
 #assume default ssh key
 send_command()
 {
+    echo "set timeout 5"
+    echo "set failed false"
     echo "spawn ssh -o \"StrictHostKeyChecking no\" $username@$newhost"
     echo -e "expect { \n
             \"*>\" { sleep 2 } \n
@@ -192,7 +195,7 @@ send_command()
     echo "expect \"*>\""
     echo "send \"file delete /tmp/boltconfig-$timestamp\r\""
     echo "expect \"*>\""
-    echo -e "if {failed} { \n
+    echo -e "if {\$failed} { \n
         puts \"Configuration apply failed on $newhost\" \n
         exit 1 \n
         }"
