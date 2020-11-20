@@ -79,6 +79,7 @@ then
         echo "send \"show | compare\r\""
         echo "expect \"*#\""
         echo "send \"$apply_command\r\""
+        echo "sleep 5"
         if [ $PT__noop == true ]
         then
             echo "expect \"*#\""
@@ -131,6 +132,7 @@ then
         echo "send \"show | compare\r\""
         echo "expect \"*#\""
         echo "send \"$apply_command\r\""
+        echo "sleep 5"
         if [ $PT__noop == true ]
         then
             echo "expect \"*#\""
@@ -182,6 +184,7 @@ send_command()
     echo "send \"show | compare\r\""
     echo "expect \"*#\""
     echo "send \"$apply_command\r\""
+    echo "sleep 5"
     if [ $PT__noop == true ]
     then
         echo "expect \"*#\""
