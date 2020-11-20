@@ -13,7 +13,7 @@ All notable changes to this project will be documented in this file.
 - [#9](https://github.com/benjamin-robertson/juniper_config/issues/9) Task is not aware if configuration database is locked
 
 **Known Issues**
-- [#10](https://github.com/benjamin-robertson/juniper_config/issues/10)
+- [#10](https://github.com/benjamin-robertson/juniper_config/issues/10) When --noop is used and configuration is invalid. Bolt still report the node as successful
 
 ## Release 0.1.1
 
