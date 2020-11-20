@@ -5,7 +5,14 @@ config=$PT_config
 username=$PT_user
 host=$PT__target
 applymode=$PT_apply_mode
-# diag echos
+# check if sleeptime has been set, if not default to 5 seconds
+if [[ -v PT_sleeptime ]] 
+then
+    sleeptime=$PT_sleeptime
+else
+    sleeptime=5
+fi
+
 
 # Check install requirements
 expectlocation=`which expect`
@@ -25,7 +32,7 @@ echo Running in load mode $applymode
 
 newhost=$(echo $host | awk -F 'uri":' '{ print $2 }' | awk -F "," '{ print $1 }' | sed 's/"//g')
 echo Running on host $newhost
-
+echo Sleeptime is at $sleeptime seconds
 
 
 
@@ -64,6 +71,7 @@ then
     send_command_password()
     {
         echo "set timeout 5"
+        echo "set failed false"
         echo "spawn ssh -o \"StrictHostKeyChecking no\" -o \"ConnectTimeout 10\" $username@$newhost"
         echo -e "expect {\n
             \"Password:\" { send \"$PT_password\" } \n
@@ -72,20 +80,36 @@ then
         echo "send \r"
         echo "expect \"*>\""
         echo "send \"configure exclusive\r\""
+        echo "sleep 2"
+        echo -e "expect { \n
+            \"*#\" { sleep 1 } \n
+            \"*>\" { puts \"Could not get exclusive lock on configuration database on $newhost\" ; exit 1 } \n
+            }"
         echo "expect \"*#\""
         echo "send \"load $applymode /tmp/boltconfig-$timestamp\r\""
         echo "expect \"*#\""
         echo "send \"show | compare\r\""
+        echo "sleep $sleeptime"
         echo "expect \"*#\""
         echo "send \"$apply_command\r\""
+        echo "sleep $sleeptime"
         if [ $PT__noop == true ]
         then
             echo "expect \"*#\""
             echo "send \"exit configuration-mode\r\""
+        else
+            echo -e "expect { \n
+                \"*>\" { sleep 1 } \n 
+                \"*#\" { set failed true ; send \"exit configuration-mode\r\" } \n
+                }"
         fi
         echo "expect \"*>\""
         echo "send \"file delete /tmp/boltconfig-$timestamp\r\""
         echo "expect \"*>\""
+        echo -e "if {\$failed} { \n
+            puts \"Configuration apply failed on $newhost\" \n
+            exit 1 \n
+            }"        
         echo "send \"exit\""
         echo "exit 0"
     }
@@ -106,6 +130,7 @@ then
         # Copy config to juniper host under /tmp
         scp -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" -i $PT_ssh_key $config $username@$newhost:/tmp/boltconfig-$timestamp
         echo "set timeout 5"
+        echo "set failed false"
         echo "spawn ssh -o \"StrictHostKeyChecking no\" -o \"ConnectTimeout 10\" -i $PT_ssh_key $username@$newhost"
         echo -e "expect { \n
             \"*>\" { sleep 2 } \n
@@ -114,20 +139,35 @@ then
         echo "send \r"
         echo "expect \"*>\""
         echo "send \"configure exclusive\r\""
-        echo "expect \"*#\""
+        echo "sleep 2"
+        echo -e "expect { \n
+            \"*#\" { sleep 1 } \n
+            \"*>\" { puts \"Could not get exclusive lock on configuration database on $newhost\" ; exit 1 } \n
+            }"
         echo "send \"load $applymode /tmp/boltconfig-$timestamp\r\""
         echo "expect \"*#\""
         echo "send \"show | compare\r\""
+        echo "sleep $sleeptime"
         echo "expect \"*#\""
         echo "send \"$apply_command\r\""
+        echo "sleep $sleeptime"
         if [ $PT__noop == true ]
         then
             echo "expect \"*#\""
             echo "send \"exit configuration-mode\r\""
+        else
+            echo -e "expect { \n
+                \"*>\" { sleep 1 } \n 
+                \"*#\" { set failed true ; send \"exit configuration-mode\r\" } \n
+                }"
         fi
         echo "expect \"*>\""
         echo "send \"file delete /tmp/boltconfig-$timestamp\r\""
         echo "expect \"*>\""
+        echo -e "if {\$failed} { \n
+            puts \"Configuration apply failed on $newhost\" \n
+            exit 1 \n
+            }"
         echo "send \"exit\""
         echo "exit 0"
     }
@@ -146,6 +186,8 @@ scp -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" $config $username@$newh
 #assume default ssh key
 send_command()
 {
+    echo "set timeout 5"
+    echo "set failed false"
     echo "spawn ssh -o \"StrictHostKeyChecking no\" $username@$newhost"
     echo -e "expect { \n
             \"*>\" { sleep 2 } \n
@@ -154,20 +196,36 @@ send_command()
     echo "send \r"
     echo "expect \"*>\""
     echo "send \"configure exclusive\r\""
+    echo "sleep 2"
+    echo -e "expect { \n
+        \"*#\" { sleep 1 } \n
+        \"*>\" { puts \"Could not get exclusive lock on configuration database on $newhost\" ; exit 1 } \n
+        }"
     echo "expect \"*#\""
     echo "send \"load $applymode /tmp/boltconfig-$timestamp\r\""
     echo "expect \"*#\""
     echo "send \"show | compare\r\""
+    echo "sleep $sleeptime"
     echo "expect \"*#\""
     echo "send \"$apply_command\r\""
+    echo "sleep $sleeptime"
     if [ $PT__noop == true ]
     then
         echo "expect \"*#\""
         echo "send \"exit configuration-mode\r\""
+    else
+        echo -e "expect { \n
+            \"*>\" { sleep 1 } \n 
+            \"*#\" { set failed true ; send \"exit configuration-mode\r\" } \n
+            }"
     fi
     echo "expect \"*>\""
     echo "send \"file delete /tmp/boltconfig-$timestamp\r\""
     echo "expect \"*>\""
+    echo -e "if {\$failed} { \n
+        puts \"Configuration apply failed on $newhost\" \n
+        exit 1 \n
+        }"
     echo "send \"exit\""
     echo "exit 0"
 }

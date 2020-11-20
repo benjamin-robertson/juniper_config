@@ -24,6 +24,10 @@
     "ssh_key":{
       "description": "Optional: ssh key for the user, path to key",
       "type": "Optional[String[1]]"
+    },
+    "sleeptime":{
+      "description": "Optional: sleep time between operations on the JunOS device, default 5 seconds. Some devices with large configurations set may require longer.",
+      "type": "Optional[Integer]"
     }
   }
 }
