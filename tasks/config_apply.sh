@@ -142,7 +142,7 @@ then
         echo "expect \"*>\""
         echo "send \"file delete /tmp/boltconfig-$timestamp\r\""
         echo "expect \"*>\""
-        echo -e "if {failed} { \n
+        echo -e "if {\$failed} { \n
             puts \"Configuration apply failed on $newhost\" \n
             exit 1 \n
             }"
