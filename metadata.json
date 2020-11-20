@@ -1,6 +1,6 @@
 {
   "name": "benjaminrobertson-juniper_config",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "benjaminrobertson",
   "summary": "Task which applies configurations to JunOS devices",
   "license": "Apache-2.0",
