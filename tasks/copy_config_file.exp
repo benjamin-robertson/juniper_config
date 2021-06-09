@@ -1,5 +1,8 @@
 #!/usr/bin/expect
 
+send_user "Hi testing output\n"
+send_user "$env(PT_config)\n"
+
 set timeout 5
 set failed false
 spawn ssh -o "StrictHostKeyChecking no" $username@$newhost

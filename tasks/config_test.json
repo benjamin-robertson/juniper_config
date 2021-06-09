@@ -1,0 +1,31 @@
+{
+  "puppet_task_version": 1,
+  "supports_noop": false,
+  "description": "A short description of this task",
+  "parameters": {
+    "config":{
+      "description": "Config to apply",
+      "type": "String[1]"
+    },
+    "user":{
+      "description": "User to login to juniper",
+      "type": "String[1]"
+    },
+    "apply_mode":{
+      "description": "Apply mode, either set, merge, override, replace",
+      "type": "Enum[\"set\",\"merge\",\"override\",\"replace\"]"
+    },
+    "password":{
+      "description": "Optional: password for the user",
+      "type": "Optional[String[1]]"
+    },
+    "ssh_key":{
+      "description": "Optional: ssh key for the user, path to key",
+      "type": "Optional[String[1]]"
+    },
+    "sleeptime":{
+      "description": "Optional: sleep time between operations on the JunOS device, default 5 seconds. Some devices with large configurations set may require longer.",
+      "type": "Optional[Integer]"
+    }
+  }
+}
