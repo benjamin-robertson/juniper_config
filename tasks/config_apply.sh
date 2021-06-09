@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export
+
 # set all the varibles
 config=$PT_config
 username=$PT_user
