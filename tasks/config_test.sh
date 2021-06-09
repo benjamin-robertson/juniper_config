@@ -27,4 +27,6 @@
 # Learn more at: https://puppet.com/docs/bolt/0.x/writing_tasks.html#ariaid-title11
 #
 
+echo "In bash"
+
 ./copy_config_file.exp
