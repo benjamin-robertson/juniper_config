@@ -1,0 +1,44 @@
+#!/usr/bin/expect
+
+set timeout 5
+set failed false
+spawn ssh -o "StrictHostKeyChecking no" $username@$newhost
+expect { 
+        "*>" { sleep 2 }
+        timeout { puts Failed to connect to host $newhost ; exit 1 }
+        }
+send \r
+expect "*>"
+send "configure exclusive\r"
+sleep 2
+expect { 
+    "*#" { sleep 1 }
+    "*>" { puts "Could not get exclusive lock on configuration database on $newhost" ; exit 1 }
+    }
+expect "*#"
+send "load $applymode /tmp/boltconfig-$timestamp"
+expect "*#"
+send "show | compare\r"
+sleep $sleeptime
+expect "*#"
+send "$apply_command\r"
+sleep $sleeptime
+if [ $PT__noop == true ]
+then
+    expect "*#"
+    send "exit configuration-mode\r"
+else
+    expect { 
+        "*>" { sleep 1 }
+        "*#" { set failed true ; send "exit configuration-mode\r" }
+        }
+fi
+expect "*>"
+send "file delete /tmp/boltconfig-$timestamp\r"
+expect "*>"
+if {$failed} {
+    puts "Configuration apply failed on $newhost"
+    exit 1
+    }
+send "exit"
+exit 0
