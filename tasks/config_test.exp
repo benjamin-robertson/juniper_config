@@ -7,7 +7,7 @@ set username $env(PT_user)
 set applymode $env(PT_apply_mode)
 set host $env(PT__target)
 # Check if sleep timer has been set, if not default to 5 seconds
-if {[$env[PT_sleeptime]]} {
+if {[info exists $dog]} {
     set sleeptime $env[PT_sleeptime]
     puts "Sleeptime set to $sleeptime"
 } else {
