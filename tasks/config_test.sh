@@ -1,32 +1,51 @@
-#!/bin/sh
-
-# Puppet Task Name: config_test
-#
-# This is where you put the shell code for your task.
-#
-# You can write Puppet tasks in any language you want and it's easy to
-# adapt an existing Python, PowerShell, Ruby, etc. script. Learn more at:
-# https://puppet.com/docs/bolt/0.x/writing_tasks.html
-#
-# Puppet tasks make it easy for you to enable others to use your script. Tasks
-# describe what it does, explains parameters and which are required or optional,
-# as well as validates parameter type. For examples, if parameter "instances"
-# must be an integer and the optional "datacenter" parameter must be one of
-# portland, sydney, belfast or singapore then the .json file
-# would include:
-#   "parameters": {
-#     "instances": {
-#       "description": "Number of instances to create",
-#       "type": "Integer"
-#     },
-#     "datacenter": {
-#       "description": "Datacenter where instances will be created",
-#       "type": "Enum[portland, sydney, belfast, singapore]"
-#     }
-#   }
-# Learn more at: https://puppet.com/docs/bolt/0.x/writing_tasks.html#ariaid-title11
-#
+#!/bin/bash
 
 echo "In bash"
 
-./copy_config_file.exp
+# set all the varibles
+config=$PT_config
+username=$PT_user
+host=$PT__target
+applymode=$PT_apply_mode
+# check if sleeptime has been set, if not default to 5 seconds
+if [[ -v PT_sleeptime ]] 
+then
+    sleeptime=$PT_sleeptime
+else
+    sleeptime=5
+fi
+
+
+# Check install requirements
+expectlocation=`which expect`
+if [ $? == 0 ]
+then
+    echo expect is at $expectlocation
+else
+    echo Cannot locate expect, please install bailing out.
+    exit 1
+fi
+
+#set timestamp for config file
+timestamp=`date +%s`
+
+echo Using configuration file $config
+echo Running in load mode $applymode
+
+newhost=$(echo $host | awk -F 'uri":' '{ print $2 }' | awk -F "," '{ print $1 }' | sed 's/"//g')
+echo Running on host $newhost
+echo Sleeptime is at $sleeptime seconds
+
+
+
+#check if we are operting noop mode
+if [ $PT__noop == true ]
+then
+    echo Running in noop mode
+    apply_command="commit check"
+else
+    echo Running in apply mode
+    apply_command="commit and-quit"
+fi
+
+./config_default_key.exp

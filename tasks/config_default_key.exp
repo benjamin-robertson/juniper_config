@@ -1,9 +1,8 @@
 #!/usr/bin/expect
 
 send_user "Set varibles in expect\n"
-set username = $env(PT_user)
-send_user "Username is \n"
-send_user $useranme
+set username $env(PT_user)
+send_user "Username is $username\n"
 send_user "$env(PT_config)\n"
 
 set timeout 5
