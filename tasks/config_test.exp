@@ -65,7 +65,7 @@ sleep $sleeptime
 expect "*#"
 send "$apply_command\r"
 sleep $sleeptime
-if {$PT__noop == "true"} {
+if {[info exists env(PT__noop)]} {
     expect "*#"
     send "exit configuration-mode\r"
 } else {
