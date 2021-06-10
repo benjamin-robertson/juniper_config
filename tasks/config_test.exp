@@ -76,6 +76,7 @@ if {[info exists skipdefault]} {
 set failed false
 #### if using password
 if {[info exists env(PT_password)]} { 
+    puts "with password"
     spawn ssh -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" $username@$newhost
     expect {
         "Password:" {
@@ -88,11 +89,13 @@ if {[info exists env(PT_password)]} {
 }
 #### If using explicit private key
 if {[info exists env(PT_ssh_key)]} {
+    puts "explicty key"
     spawn ssh -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" -i $PT_ssh_key $username@$newhost
 
 }
 # If using default key
 if {[info exists skipdefault]} {
+    puts "default key"
     spawn ssh -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" $username@$newhost
 }
 
