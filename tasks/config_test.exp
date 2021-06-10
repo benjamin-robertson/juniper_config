@@ -120,10 +120,10 @@ expect {
     "load complete" {
         sleep 2
         puts "config load successful"
-    default {
+    }
+    "*" {
         puts "config load had errors"
         sleep 2
-    }
     }
 }
 expect "*#"
