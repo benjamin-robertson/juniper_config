@@ -66,6 +66,7 @@ if {[info exists env(PT_ssh_key)]} {
 
 #### if using default key
 if {[info exists skipdefault]} {
+    puts "copying files"
     spawn scp -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" $config $username@$newhost:/tmp/boltconfig-$timestamp
     sleep 2
 }
@@ -83,7 +84,7 @@ if {[info exists env(PT_password)]} {
             send "$PT_password"
         }
         timeout {
-            puts "Failed to connect to host $newhost" ; exit 1
+            puts "or me Failed to connect to host $newhost" ; exit 1
         }
     }
 }
@@ -103,7 +104,7 @@ if {[info exists skipdefault]} {
 send \r
 expect { 
         "*>" { sleep 2 }
-        timeout { puts "Failed to connect to host $newhost" ; exit 1 }
+        timeout { puts "its me Failed to connect to host $newhost" ; exit 1 }
         }
 send \r
 expect "*>"
