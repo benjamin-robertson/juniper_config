@@ -131,8 +131,12 @@ expect {
         puts "Configuration load failed on $newhost"
         sleep 1
         send "exit configuration-mode\r"
+        sleep 1
         expect "*>"
         send "file delete /tmp/boltconfig-$timestamp\r"
+        sleep 1
+        expect "*>"
+        send "exit"
         exit 1
     }
     "load complete" {
