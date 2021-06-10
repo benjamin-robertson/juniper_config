@@ -8,7 +8,7 @@ set applymode $env(PT_apply_mode)
 set host $env(PT__target)
 puts "i ran"
 # Check if sleep timer has been set, if not default to 5 seconds
-if {[info exists $env(PT_sleeptime)]} {
+if {[info exists env(PT_sleeptime)]} {
     set sleeptime $env(PT_sleeptime)
     puts "Sleeptime set to $sleeptime"
 } else {
@@ -21,7 +21,7 @@ set timestamp [exec date +%s]
 puts "timestamp is $timestamp"
 
 # chomp hostname
-set newhost [exec echo $host | awk -F 'uri":' '{ print $2 }' | awk -F "," '{ print $1 }' | sed 's/"//g']
+set newhost [exec echo $host | awk -F uri": {{ print $2 }} | awk -F "," {{ print $1 }} | sed s/"//g]
 
 puts "Using configuration file $config"
 puts "Running in load mode $applymode"
