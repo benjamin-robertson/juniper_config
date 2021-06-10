@@ -29,7 +29,7 @@ puts "Running on host $newhost"
 puts "Sleeptime is at $sleeptime seconds"
 
 # check what mode we are operating in
-if { $env(PT__noop) == "true" } {
+if {[info exists env(PT__noop)]} {
     puts "Running in noop mode"
     set apply_command "commit check"
 } else {
