@@ -117,6 +117,7 @@ expect {
     "*>" { 
         puts "Could not get exclusive lock on configuration database on $newhost"
         send "file delete /tmp/boltconfig-$timestamp\r"
+        sleep 2
         expect "*"
         exit 1
     }
