@@ -65,7 +65,7 @@ if {[info exists env(PT_ssh_key)]} {
 }
 
 #### if using default key
-if {[info exists skipdefault]} {
+if {$skipdefault != "true" } {
     puts "copying files"
     spawn scp -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" $config $username@$newhost:/tmp/boltconfig-$timestamp
     sleep 2
