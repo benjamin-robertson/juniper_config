@@ -58,7 +58,7 @@ expect {
     "*>" { puts "Could not get exclusive lock on configuration database on $newhost" ; exit 1 }
     }
 expect "*#"
-send "load $applymode /tmp/boltconfig-$timestamp"
+send "load $applymode /tmp/boltconfig-$timestamp\r"
 expect "*#"
 send "show | compare\r"
 sleep $sleeptime
