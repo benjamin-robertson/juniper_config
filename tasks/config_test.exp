@@ -84,7 +84,7 @@ if {[info exists env(PT_password)]} {
             send "$PT_password"
         }
         timeout {
-            puts "or me Failed to connect to host $newhost" ; exit 1
+            puts "Failed to connect to host $newhost" ; exit 1
         }
     }
 }
@@ -95,7 +95,7 @@ if {[info exists env(PT_ssh_key)]} {
 
 }
 # If using default key
-if {[info exists skipdefault]} {
+if {![info exists skipdefault]} {
     puts "default key"
     spawn ssh -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" $username@$newhost
 }
@@ -104,7 +104,7 @@ if {[info exists skipdefault]} {
 send \r
 expect { 
         "*>" { sleep 2 }
-        timeout { puts "its me Failed to connect to host $newhost" ; exit 1 }
+        timeout { puts "Failed to connect to host $newhost" ; exit 1 }
         }
 send \r
 expect "*>"
