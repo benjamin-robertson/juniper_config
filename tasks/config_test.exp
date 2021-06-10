@@ -111,9 +111,16 @@ expect "*>"
 send "configure exclusive\r"
 sleep 2
 expect { 
-    "*#" { sleep 1 }
-    "*>" { puts "Could not get exclusive lock on configuration database on $newhost" ; exit 1 }
+    "*#" { 
+        sleep 1 
     }
+    "*>" { 
+        puts "Could not get exclusive lock on configuration database on $newhost"
+        send "file delete /tmp/boltconfig-$timestamp\r"
+        expect "*"
+        exit 1
+    }
+}
 expect "*#"
 send "load $applymode /tmp/boltconfig-$timestamp\r"
 sleep $sleeptime
