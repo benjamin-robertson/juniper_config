@@ -160,7 +160,7 @@ expect "*>"
 send "file delete /tmp/boltconfig-$timestamp\r"
 expect "*>"
 if {$failed} {
-    puts "Configuration apply failed on $newhost"
+    puts "Configuration apply\\check failed on $newhost"
     exit 1
     }
 send "exit"
