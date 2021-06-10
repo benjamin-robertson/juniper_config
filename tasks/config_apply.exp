@@ -128,7 +128,7 @@ sleep $sleeptime
 expect {
     "error" {
         puts "config load had errors"
-        set failed true
+        set failedload true
         sleep 2
     }
     "load complete" {
@@ -146,7 +146,7 @@ if {[info exists env(PT__noop)]} {
     expect {
         "error" {
             puts "configuration check failed"
-            set failed true
+            set failedconfig true
         }
         "configuration check succeeds" {
             puts "configuration check successful"
@@ -168,9 +168,13 @@ if {[info exists env(PT__noop)]} {
 expect "*>"
 send "file delete /tmp/boltconfig-$timestamp\r"
 expect "*>"
-if {$failed} {
+if {$failedload} {
+    puts "Configuration load failed on $newhost"
+    exit 1
+}
+if {$failedconfig} {
     puts "Configuration apply\\check failed on $newhost"
     exit 1
-    }
+}
 send "exit"
 exit 0
