@@ -1,10 +1,9 @@
 #!/bin/expect
 
-export
-
-
 send_user "Set varibles in expect\n"
 set username $env(PT_user)
+set host $env()
+send_user "all env $host"
 send_user "Username is $username\n"
 send_user "$env(PT_config)\n"
 
