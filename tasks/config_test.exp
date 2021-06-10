@@ -102,7 +102,7 @@ if {[info exists skipdefault]} {
 # continue with setup now we are authenticated.
 expect { 
         "*>" { sleep 2 }
-        timeout { puts Failed to connect to host $newhost ; exit 1 }
+        timeout { puts "Failed to connect to host $newhost" ; exit 1 }
         }
 send \r
 expect "*>"
