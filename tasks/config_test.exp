@@ -6,7 +6,6 @@ set config $env(PT_config)
 set username $env(PT_user)
 set applymode $env(PT_apply_mode)
 set host $env(PT__target)
-puts "i ran"
 # Check if sleep timer has been set, if not default to 5 seconds
 if {[info exists env(PT_sleeptime)]} {
     set sleeptime $env(PT_sleeptime)
@@ -37,14 +36,67 @@ if {[info exists env(PT__noop)]} {
     set apply_command "commit and-quit"
 }
 
-# Copy config to host
+# Set SSH timeout
 set timeout 5
-spawn scp -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" $config $username@$newhost:/tmp/boltconfig-$timestamp
-sleep 2
 
-# Apply the config
+# Copy config to host
+####################################################
+#### If using password
+if {[info exists env(PT_password)]} { 
+    spawn scp -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" $config $username@$newhost:/tmp/boltconfig-$timestamp
+    expect {
+        "Password:" {
+            send "$PT_password\r" ; exp_continue
+        }
+        timeout {
+            puts "Failed to connect to host $newhost" ; exit 1
+        }
+        eof exit
+    }
+    send \r
+    sleep 2
+    set skipdefault "true"
+}
+#### if using explicit private key
+if {[info exists env(PT_ssh_key)]} {
+    scp -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" -i $PT_ssh_key $config $username@$newhost:/tmp/boltconfig-$timestamp
+    sleep 2
+    set skipdefault "true"
+}
+
+#### if using default key
+if {[info exists skipdefault]} {
+    spawn scp -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" $config $username@$newhost:/tmp/boltconfig-$timestamp
+    sleep 2
+}
+
+
+# Apply the configuration - Choose authentication method
+#################################################
 set failed false
-spawn ssh -o "StrictHostKeyChecking no" $username@$newhost
+#### if using password
+if {[info exists env(PT_password)]} { 
+    spawn ssh -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" $username@$newhost
+    expect {
+        "Password:" {
+            send "$PT_password"
+        }
+        timeout {
+            puts "Failed to connect to host $newhost" ; exit 1
+        }
+    }
+}
+#### If using explicit private key
+if {[info exists env(PT_ssh_key)]} {
+    spawn ssh -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" -i $PT_ssh_key $username@$newhost
+
+}
+# If using default key
+if {[info exists skipdefault]} {
+    spawn ssh -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" $username@$newhost
+}
+
+# continue with setup now we are authenticated.
 expect { 
         "*>" { sleep 2 }
         timeout { puts Failed to connect to host $newhost ; exit 1 }
