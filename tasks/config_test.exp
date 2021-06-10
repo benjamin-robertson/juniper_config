@@ -116,6 +116,7 @@ expect {
     }
 expect "*#"
 send "load $applymode /tmp/boltconfig-$timestamp\r"
+sleep $sleeptime
 expect {
     "load complete" {
         sleep 2
