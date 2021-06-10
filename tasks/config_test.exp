@@ -6,6 +6,7 @@ set config $env(PT_config)
 set username $env(PT_user)
 set applymode $env(PT_apply_mode)
 set host $env(PT__target)
+puts "i ran"
 # Check if sleep timer has been set, if not default to 5 seconds
 if {[info exists $env(PT_sleeptime)]} {
     set sleeptime $env(PT_sleeptime)
