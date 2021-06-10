@@ -1,11 +1,33 @@
 #!/bin/expect
 
-send_user "Set varibles in expect\n"
-set username $env(PT_user)
 parray env
-send_user "all env $host"
-send_user "Username is $username\n"
-send_user "$env(PT_config)\n"
+# set varibles
+set config $env(PT_config)
+set username $env(PT_user)
+set applymode $env(PT_apply_mode)
+set host $env(PT__target)
+# Check if sleep timer has been set, if not default to 5 seconds
+if {[$env[PT_sleeptime]]} {
+    set sleeptime $env[PT_sleeptime]
+    puts "Sleeptime set to $sleeptime"
+} else {
+    set sleeptime 5
+    puts "Sleeptime set to $sleeptime"
+}
+
+#set timestamp for config file
+set timestamp [exec date +%s]
+puts "timestamp is $timestamp"
+
+# chomp hostname
+set newhost [exec echo $host | awk -F 'uri":' '{ print $2 }' | awk -F "," '{ print $1 }' | sed 's/"//g']
+
+puts "Using configuration file $config"
+puts "Running in load mode $applymode"
+puts "Running on host $newhost"
+puts "Sleeptime is at $sleeptime seconds"
+
+
 
 set timeout 5
 set failed false
