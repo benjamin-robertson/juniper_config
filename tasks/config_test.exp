@@ -116,6 +116,16 @@ expect {
     }
 expect "*#"
 send "load $applymode /tmp/boltconfig-$timestamp\r"
+expect {
+    "load complete" {
+        sleep 2
+        puts "config load successful"
+    default {
+        puts "config load had errors"
+        sleep 2
+    }
+    }
+}
 expect "*#"
 send "show | compare\r"
 sleep $sleeptime
