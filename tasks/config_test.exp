@@ -1,6 +1,6 @@
 #!/bin/expect
 
-parray env
+#parray env
 # set varibles
 set config $env(PT_config)
 set username $env(PT_user)
@@ -116,7 +116,6 @@ expect {
     }
     "*>" { 
         puts "Could not get exclusive lock on configuration database on $newhost"
-        sleep 1
         send "file delete /tmp/boltconfig-$timestamp\r"
         sleep 2
         expect "*"
