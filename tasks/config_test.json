@@ -1,6 +1,6 @@
 {
   "puppet_task_version": 1,
-  "supports_noop": false,
+  "supports_noop": true,
   "description": "A short description of this task",
   "remote": true,
   "input_method": "environment",
