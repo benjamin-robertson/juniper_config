@@ -180,6 +180,7 @@ puts "Successful run 2"
 send "file delete /tmp/boltconfig-$timestamp\r"
 puts "Successful run 3"
 expect "*>"
+exit 0
 if {$failedconfig} {
     puts "Configuration apply\\check failed on $newhost"
     exit 1
