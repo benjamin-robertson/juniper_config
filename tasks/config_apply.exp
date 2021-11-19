@@ -92,7 +92,7 @@ if {[info exists env(PT_password)]} {
 }
 #### If using explicit private key
 if {[info exists env(PT_ssh_key)]} {
-    puts "explicty key"
+    puts "explict key"
     spawn ssh -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" -i $PT_ssh_key $username@$newhost
 
 }
@@ -183,4 +183,5 @@ if {$failedconfig} {
     exit 1
 }
 send "exit"
+put "Successful run"
 exit 0
