@@ -183,5 +183,5 @@ if {$failedconfig} {
     exit 1
 }
 send "exit"
-put "Successful run"
+puts "Successful run"
 exit 0
