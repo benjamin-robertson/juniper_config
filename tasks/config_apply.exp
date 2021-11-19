@@ -185,5 +185,6 @@ if {$failedconfig} {
     exit 1
 }
 puts "Successful run 1"
+sleep $sleeptime
 send "exit"
 exit 0
