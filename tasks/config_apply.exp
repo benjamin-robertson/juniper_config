@@ -59,6 +59,7 @@ if {[info exists env(PT_password)]} {
 }
 #### if using explicit private key
 if {[info exists env(PT_ssh_key)]} {
+    set PT_ssh_key $env(PT_ssh_key)
     puts "copying files"
     spawn scp -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" -i $PT_ssh_key $config $username@$newhost:/tmp/boltconfig-$timestamp
     sleep 2
