@@ -181,7 +181,7 @@ if {[info exists env(PT__noop)]} {
 expect "*>"
 puts "Successful run 2"
 send "file delete /tmp/boltconfig-$timestamp\r"
-sleep 2
+sleep $sleeptime
 expect "*>"
 if {$failedconfig} {
     puts "Configuration apply\\check failed on $newhost"
