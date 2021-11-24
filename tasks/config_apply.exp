@@ -175,6 +175,7 @@ if {[info exists env(PT__noop)]} {
         }
     }
 }
+sleep $sleeptime
 expect "*>"
 send "file delete /tmp/boltconfig-$timestamp\r"
 expect "*>"
