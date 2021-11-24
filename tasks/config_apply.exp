@@ -54,7 +54,6 @@ if {[info exists env(PT_password)]} {
         }
     }
     send \r
-    puts "here 123"
     sleep 2
     set skipdefault "true"
 }
@@ -74,8 +73,7 @@ if {![info exists skipdefault]} {
     sleep 2
 }
 
-puts "here 456"
-
+puts "Applying configuration"
 # Apply the configuration - Choose authentication method
 #################################################
 set failedconfig false
@@ -178,14 +176,13 @@ if {[info exists env(PT__noop)]} {
     }
 }
 expect "*>"
-puts "Successful run 2"
 send "file delete /tmp/boltconfig-$timestamp\r"
 expect "*>"
 if {$failedconfig} {
     puts "Configuration apply\\check failed on $newhost"
     exit 1
 }
-puts "Successful run 3"
+puts "Successful noop\\config apply"
 exit 0
 #puts "Successful run 1"
 #send "exit"
