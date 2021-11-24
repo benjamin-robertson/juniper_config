@@ -1,0 +1,189 @@
+#!/bin/expect
+
+#parray env
+# set varibles
+set config $env(PT_config)
+set username $env(PT_user)
+set applymode $env(PT_apply_mode)
+set host $env(PT__target)
+# Check if sleep timer has been set, if not default to 5 seconds
+if {[info exists env(PT_sleeptime)]} {
+    set sleeptime $env(PT_sleeptime)
+    puts "Sleeptime set to $sleeptime"
+} else {
+    set sleeptime 5
+    puts "Sleeptime set to $sleeptime"
+}
+
+#set timestamp for config file
+set timestamp [exec date +%s]
+puts "timestamp is $timestamp"
+
+# chomp hostname
+set newhost [exec echo $host | awk -F uri": {{ print $2 }} | awk -F "," {{ print $1 }} | sed s/"//g]
+
+puts "Using configuration file $config"
+puts "Running in load mode $applymode"
+puts "Running on host $newhost"
+puts "Sleeptime is at $sleeptime seconds"
+
+# check what mode we are operating in
+if {[info exists env(PT__noop)]} {
+    puts "Running in noop mode"
+    set apply_command "commit check"
+} else {
+    puts "Running in apply mode"
+    set apply_command "commit and-quit"
+}
+
+# Set SSH timeout
+set timeout 5
+
+# Copy config to host
+####################################################
+#### If using password
+if {[info exists env(PT_password)]} { 
+    set password $env(PT_password)
+    spawn scp -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" $config $username@$newhost:/tmp/boltconfig-$timestamp
+    expect {
+        "Password:" {
+            send "$password\r"
+        }
+        timeout {
+            puts "Failed to connect to host $newhost" ; exit 1
+        }
+    }
+    send \r
+    sleep 2
+    set skipdefault "true"
+}
+#### if using explicit private key
+if {[info exists env(PT_ssh_key)]} {
+    set PT_ssh_key $env(PT_ssh_key)
+    puts "copying files"
+    spawn scp -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" -i $PT_ssh_key $config $username@$newhost:/tmp/boltconfig-$timestamp
+    sleep 2
+    set skipdefault "true"
+}
+
+#### if using default key
+if {![info exists skipdefault]} {
+    puts "copying files"
+    spawn scp -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" $config $username@$newhost:/tmp/boltconfig-$timestamp
+    sleep 2
+}
+
+puts "Applying configuration"
+# Apply the configuration - Choose authentication method
+#################################################
+set failedconfig false
+#### if using password
+if {[info exists env(PT_password)]} { 
+    puts "with password"
+    spawn ssh -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" $username@$newhost
+    expect {
+        "Password:" {
+            send "$password"
+        }
+        timeout {
+            puts "Failed to connect to host $newhost" ; exit 1
+        }
+    }
+}
+#### If using explicit private key
+if {[info exists env(PT_ssh_key)]} {
+    puts "explict key"
+    spawn ssh -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" -i $PT_ssh_key $username@$newhost
+
+}
+# If using default key
+if {![info exists skipdefault]} {
+    puts "default key"
+    spawn ssh -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" $username@$newhost
+}
+
+# continue with setup now we are authenticated.
+send \r
+expect { 
+        "*>" { sleep 2 }
+        timeout { puts "Failed to connect to host $newhost" ; exit 1 }
+        }
+send \r
+expect "*>"
+send "configure exclusive\r"
+sleep 2
+expect { 
+    "*#" { 
+        sleep 1 
+    }
+    "*>" { 
+        puts "Could not get exclusive lock on configuration database on $newhost"
+        send "file delete /tmp/boltconfig-$timestamp\r"
+        sleep 2
+        expect "*"
+        exit 1
+    }
+}
+expect "*#"
+send "load $applymode /tmp/boltconfig-$timestamp\r"
+sleep $sleeptime
+expect {
+    "error" {
+        puts "config load had errors"
+        puts "Configuration load failed on $newhost"
+        sleep 1
+        send "exit configuration-mode\r"
+        sleep 1
+        expect "*>"
+        send "file delete /tmp/boltconfig-$timestamp\r"
+        sleep 1
+        expect "*>"
+        send "exit"
+        exit 1
+    }
+    "load complete" {
+        puts "config load sucessful"
+        sleep 2
+    }
+}
+expect "*#"
+send "show | compare\r"
+sleep $sleeptime
+expect "*#"
+send "$apply_command\r"
+sleep $sleeptime
+if {[info exists env(PT__noop)]} {
+    expect {
+        "error" {
+            puts "configuration check failed"
+            set failedconfig true
+        }
+        "configuration check succeeds" {
+            puts "configuration check successful"
+        }
+    }
+    expect "*#"
+    send "exit configuration-mode\r"
+} else {
+    expect { 
+        "*>" { 
+            sleep 1 
+        }
+        "*#" { 
+            set failedconfig true
+            send "exit configuration-mode\r" 
+        }
+    }
+}
+expect "*>"
+send "file delete /tmp/boltconfig-$timestamp\r"
+expect "*>"
+if {$failedconfig} {
+    puts "Configuration apply\\check failed on $newhost"
+    exit 1
+}
+puts "Successful noop\\config apply"
+exit 0
+#puts "Successful run 1"
+#send "exit"
+#exit 0
