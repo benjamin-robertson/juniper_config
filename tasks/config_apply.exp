@@ -56,7 +56,7 @@ if {[info exists env(PT_password)]} {
             puts "Copied file successfully" ; exp_continue
         }
     }
-    send \r
+    #send \r
     puts "here 123"
     sleep 2
     set skipdefault "true"
