@@ -47,7 +47,7 @@ if {[info exists env(PT_password)]} {
     set scp_process [spawn scp -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" $config $username@$newhost:/tmp/boltconfig-$timestamp]
     expect {
         "Password:" {
-            send "$password\r" ; exp_continue
+            send "$password\r"
         }
         timeout {
             puts "Failed to connect to host $newhost" ; exit 1
