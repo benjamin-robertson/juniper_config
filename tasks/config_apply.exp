@@ -53,7 +53,7 @@ if {[info exists env(PT_password)]} {
             puts "Failed to connect to host $newhost" ; exit 1
         }
         eof {
-            puts "Copied file successfully"
+            puts "Copied file successfully" ; exp_continue
         }
     }
     send \r
