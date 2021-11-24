@@ -43,10 +43,11 @@ set timeout 5
 ####################################################
 #### If using password
 if {[info exists env(PT_password)]} { 
+    set password $env(PT_password)
     spawn scp -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" $config $username@$newhost:/tmp/boltconfig-$timestamp
     expect {
         "Password:" {
-            send "$PT_password\r" ; exp_continue
+            send "$password\r" ; exp_continue
         }
         timeout {
             puts "Failed to connect to host $newhost" ; exit 1
@@ -83,7 +84,7 @@ if {[info exists env(PT_password)]} {
     spawn ssh -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" $username@$newhost
     expect {
         "Password:" {
-            send "$PT_password"
+            send "$password"
         }
         timeout {
             puts "Failed to connect to host $newhost" ; exit 1
