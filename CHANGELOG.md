@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.0.0
+
+**Features**
+- Uplifted config_apply task to use TCL (expect) only. 
+
+**Bugfixes**
+- [#10](https://github.com/benjamin-robertson/juniper_config/issues/10) When --noop is used and configuration is invalid. Bolt still report the node as successful
+- [#12](https://github.com/benjamin-robertson/juniper_config/issues/12) Temporary config file not deleted if config is locked.
+
 ## Release 0.1.2
 
 **Features**
