@@ -81,6 +81,6 @@ Ubuntu: 18.04, 20.04
 SLES: 12, 15
 
 Tested on the following Juniper hardware
-- vSRX - JUNOS 20.4R3.8 and vMX
-- vMX - 
+- vSRX - JUNOS 20.4R3.8
+- vMX - JUNOS 19.4R1.9 
 
