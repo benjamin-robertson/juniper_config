@@ -182,6 +182,7 @@ expect "*>"
 puts "Successful run 2"
 send "file delete /tmp/boltconfig-$timestamp\r"
 puts "Successful run 3"
+exit 0
 expect "*>"
 if {$failedconfig} {
     puts "Configuration apply\\check failed on $newhost"
