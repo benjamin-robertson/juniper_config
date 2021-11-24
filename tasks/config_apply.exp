@@ -53,10 +53,10 @@ if {[info exists env(PT_password)]} {
             puts "Failed to connect to host $newhost" ; exit 1
         }
         eof {
-            puts "Copied file successfully" ; exp_continue
+            puts "Copied file successfully" ; close
         }
     }
-    #send \r
+    send \r
     puts "here 123"
     sleep 2
     set skipdefault "true"
