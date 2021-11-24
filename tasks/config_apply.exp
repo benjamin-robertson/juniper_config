@@ -55,6 +55,7 @@ if {[info exists env(PT_password)]} {
         eof exit
     }
     send \r
+    puts "here 123"
     sleep 2
     set skipdefault "true"
 }
@@ -74,6 +75,7 @@ if {![info exists skipdefault]} {
     sleep 2
 }
 
+puts "here 456"
 
 # Apply the configuration - Choose authentication method
 #################################################
