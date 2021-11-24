@@ -43,19 +43,17 @@ set timeout 5
 ####################################################
 #### If using password
 if {[info exists env(PT_password)]} { 
-    set password $env(PT_password)
-    set scp_process [spawn scp -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" $config $username@$newhost:/tmp/boltconfig-$timestamp]
+    spawn scp -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" $config $username@$newhost:/tmp/boltconfig-$timestamp
     expect {
         "Password:" {
-            send "$password\r"
+            send "$PT_password\r" ; exp_continue
         }
         timeout {
             puts "Failed to connect to host $newhost" ; exit 1
         }
-        #eof { puts "closed process" ; close $scp_process }
+        eof exit
     }
     send \r
-    puts "here 123"
     sleep 2
     set skipdefault "true"
 }
@@ -75,7 +73,6 @@ if {![info exists skipdefault]} {
     sleep 2
 }
 
-puts "here 456"
 
 # Apply the configuration - Choose authentication method
 #################################################
@@ -86,7 +83,7 @@ if {[info exists env(PT_password)]} {
     spawn ssh -o "StrictHostKeyChecking no" -o "ConnectTimeout 10" $username@$newhost
     expect {
         "Password:" {
-            send "$password"
+            send "$PT_password"
         }
         timeout {
             puts "Failed to connect to host $newhost" ; exit 1
@@ -183,12 +180,11 @@ puts "Successful run 2"
 send "file delete /tmp/boltconfig-$timestamp\r"
 puts "Successful run 3"
 expect "*>"
-exit 0
 if {$failedconfig} {
     puts "Configuration apply\\check failed on $newhost"
     exit 1
 }
-puts "Successful run 1"
-sleep $sleeptime
-send "exit"
 exit 0
+#puts "Successful run 1"
+#send "exit"
+#exit 0
