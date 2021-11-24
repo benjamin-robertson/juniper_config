@@ -26,9 +26,9 @@ Enterprise linux: 7, 8
 Ubuntu: 18.04, 20.04
 SLES: 12, 15
 
-Requires bash, expect and bolt
+Requires expect and bolt
 
-1. Requires bolt to be intalled see: https://puppet.com/docs/bolt/latest/bolt_installing.html#install-bolt-on-rhel-sles-or-fedora
+1. Requires bolt to be installed see: https://puppet.com/docs/bolt/latest/bolt_installing.html#install-bolt-on-rhel-sles-or-fedora
 2. Use bolt to install module 'bolt project init --modules benjaminrobertson-juniper_config' Note: it will install in the current directory you're working in.
 3. In the same directory run 'bolt task show', you should see "juniper_config::config_apply   Check and compare Junper config differences" listed
 
@@ -79,4 +79,8 @@ Tested on the following platforms
 Enterprise linux: 7, 8
 Ubuntu: 18.04, 20.04
 SLES: 12, 15
+
+Tested on the following Juniper hardware
+- vSRX - JUNOS 20.4R3.8
+- vMX - JUNOS 19.4R1.9 
 
