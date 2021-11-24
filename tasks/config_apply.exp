@@ -52,7 +52,7 @@ if {[info exists env(PT_password)]} {
         timeout {
             puts "Failed to connect to host $newhost" ; exit 1
         }
-        eof { close $scp_process ; puts "closed process" }
+        eof { puts "closed process" ; close $scp_process }
     }
     send \r
     puts "here 123"
