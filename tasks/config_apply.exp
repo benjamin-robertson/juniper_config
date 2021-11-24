@@ -52,7 +52,7 @@ if {[info exists env(PT_password)]} {
         timeout {
             puts "Failed to connect to host $newhost" ; exit 1
         }
-        eof { continue }
+        eof { exp_continue }
     }
     send \r
     puts "here 123"
