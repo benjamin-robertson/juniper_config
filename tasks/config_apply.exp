@@ -187,6 +187,7 @@ if {$failedconfig} {
     puts "Configuration apply\\check failed on $newhost"
     exit 1
 }
+send "exit"
 exit 0
 #puts "Successful run 1"
 #send "exit"
