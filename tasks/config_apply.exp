@@ -55,7 +55,6 @@ if {[info exists env(PT_password)]} {
         #eof { puts "closed process" ; close $scp_process }
     }
     send \r
-    close $scp_process
     puts "here 123"
     sleep 2
     set skipdefault "true"
